@@ -206,13 +206,16 @@ fabric.properties
 .idea/httpRequests
 
 # Android studio 3.1+ serialized cache file
-.idea/caches/build_file_checksums.ser
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
+# .idea/caches/build_file_checksums.ser
+# .vscode/*
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
+# *.code-workspace
 
 # Local History for Visual Studio Code
 .history/
+
+#Red_Lance own VSCode gitignore settings:
+.vscode/
