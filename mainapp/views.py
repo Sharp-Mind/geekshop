@@ -27,7 +27,6 @@ def main(request):
 
 
 def products(request):
-    
 
     title = "продукты"
     links_menu = [
@@ -43,7 +42,7 @@ def products(request):
     with open('mainapp/imagine_outer_server/import.json', 'r', encoding='utf-8') as json_file:
         data = json.load(json_file)
 
-    [same_products.append(data[i]) for i in range(len(data))]
+    list(map(lambda el: same_products.append(el), data))
 
     # same_products = [
     #     {"name": "Отличный стул", "desc": "Не оторваться.",
@@ -57,7 +56,7 @@ def products(request):
     #         "alt": "продукт 31",
     #     },
     # ]
-    
+
     content = {"title": title, "links_menu": links_menu,
                "same_products": same_products}
     return render(request, "mainapp/products.html", content)
