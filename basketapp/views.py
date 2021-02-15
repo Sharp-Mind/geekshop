@@ -10,7 +10,7 @@ def basket(request):
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
-def basket_add(request, pk):
+def basket_add(request, pk, total_sum=0):
     product = get_object_or_404(Product, pk=pk)
     basket = Basket.objects.filter(user=request.user, product=product).first()
 
@@ -18,7 +18,10 @@ def basket_add(request, pk):
         basket = Basket(user=request.user, product=product)
 
     basket.quantity += 1
+    basket.price = product.price
     basket.save()
+
+    total_sum = sum(list(map(lambda x: x.price, Basket.objects.all())))
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
