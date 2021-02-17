@@ -19,9 +19,7 @@ def basket_add(request, pk, total_sum=0):
 
     basket.quantity += 1
     basket.price = product.price
-    basket.save()
-
-    total_sum = sum(list(map(lambda x: x.price, Basket.objects.all())))
+    basket.save()    
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
