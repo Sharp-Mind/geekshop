@@ -264,8 +264,7 @@ html, body {
 
 .slider {
 	height: 800px;
-	background-image: url(/static/img/slider.jpg);
-	/*padding-left: 98px;*/
+	background-image: url(/static/img/slider.jpg);	
 	padding-left: 78px;
 	padding-right: 211px;
 	position: relative;
@@ -334,8 +333,7 @@ html, body {
 	height: 23px;
 	background-image: url(/static/img/basket.png);
 	position: absolute;
-	top: 63px;
-	/*left: 1210px;*/
+	top: 63px;	
 	left: 1180px;
 	text-decoration: none;
 	color: #555;
@@ -1237,7 +1235,6 @@ td:first-child {
 	padding-left: 98px;
 	padding-right: 98px;
 	margin-top: 98px;
-	/*height: 651px; */
 	height: 551px;
 }
 
@@ -1248,8 +1245,7 @@ td:first-child {
 }
 
 .slider-product {
-	width: 570px;
-	/*height: 570px;*/
+	width: 570px;	
 	height: 400px;
 }
 
@@ -1372,18 +1368,15 @@ td:first-child {
 }
 
 .related .title {
-	/*height: 343px;*/
 	height: 143px;
 	margin-right: 0;
 }
 
-.related .title h2 {
-	/*margin-top: 245px;*/
+.related .title h2 {	
 	margin-top: 45px;
 }
 
 .related .title .explore {
-	/*margin-top: 262px;*/
 	margin-top: 62px;
 }
 
