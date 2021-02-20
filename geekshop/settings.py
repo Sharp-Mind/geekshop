@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "mainapp",
     "authnapp",
     "basketapp",
+    "adminapp",
 ]
 
 # Auth model
