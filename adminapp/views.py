@@ -1,46 +1,87 @@
-<a href="{% url 'main' %}" class="logo"></a>
-<ul class="menu">
-    <li>
-        <a href="{% url 'main' %}" class="{% if request.resolver_match.url_name == 'main' %}active{% endif %}">
-            домой
-        </a>
-    </li>
-    <li>
-        <a href="{% url 'products:index' %}"
-            class="{% if request.resolver_match.namespace == 'products' %}active{% endif %}">
-            продукты
-        </a>
-    </li>
-    <li>
-        <a href="{% url 'contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
-            контакты
-        </a>
-    </li>
-    {% if user.is_authenticated %}
-    <li>
-        <a href="{% url 'auth:edit' %}">
-            {{ user.first_name|default:'Пользователь' }}
-        </a>
-    </li>
-    {% endif %}
-    {% if user.is_superuser %}
-    <li>
-        <a href="{% url 'admin:users' %}">админка</a>
-    </li>
-    {% endif %}
-    <li>
-        {% if user.is_authenticated %}
-        <a href="{% url 'auth:logout' %}">выйти</a>
-        {% else %}
-        <a href="{% url 'auth:login' %}">войти</a>
-        {% endif %}
-    </li>
-</ul>
-<a href="#" class="search"></a>
-<a href="{% url 'basket:view' %}" class="basket">
-    <span>
-        {% if basket %}
-        {{ basket.0.total_cost|floatformat:0 }} руб ({{ basket.0.total_quantity }} шт)
-        {% endif %}
-    </span>
-</a>
+from django.conf import settings
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import get_object_or_404, redirect, render
+
+from authnapp.models import ShopUser
+from mainapp.models import Product, ProductCategory
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_main(request):
+    response = redirect("admin:users")
+    return response
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def users(request):
+    title = "админка/пользователи"
+    users_list = ShopUser.objects.all().order_by("-is_active", "-is_superuser", "-is_staff", "username")
+    content = {"title": title, "objects": users_list, "media_url": settings.MEDIA_URL}
+    return render(request, "adminapp/users.html", content)
+
+
+def user_create(request):
+    response = redirect("admin:users")
+    return response
+
+
+def user_update(request, pk):
+    response = redirect("admin:users")
+    return response
+
+
+def user_delete(request, pk):
+    response = redirect("admin:users")
+    return response
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def categories(request):
+    title = "админка/категории"
+    categories_list = ProductCategory.objects.all()
+    content = {"title": title, "objects": categories_list, "media_url": settings.MEDIA_URL}
+    return render(request, "adminapp/categories.html", content)
+
+
+def category_create(request):
+    response = redirect("admin:categories")
+    return response
+
+
+def category_update(request, pk):
+    response = redirect("admin:categories")
+    return response
+
+
+def category_delete(request, pk):
+    response = redirect("admin:categories")
+    return response
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def products(request, pk):
+    title = "админка/продукт"
+    category = get_object_or_404(ProductCategory, pk=pk)
+    products_list = Product.objects.filter(category__pk=pk).order_by("name")
+    content = {"title": title, "category": category, "objects": products_list, "media_url": settings.MEDIA_URL}
+    return render(request, "adminapp/products.html", content)
+
+
+def product_create(request, pk):
+    response = redirect("admin:categories")
+    return response
+
+
+def product_read(request, pk):
+    response = redirect("admin:categories")
+    return response
+
+
+def product_update(request, pk):
+    response = redirect("admin:categories")
+    return response
+
+
+def product_delete(request, pk):
+    response = redirect("admin:categories")
+    return response
