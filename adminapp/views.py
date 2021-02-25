@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, redirect, render
@@ -60,20 +61,22 @@ def user_update(request, pk):
 
 @user_passes_test(lambda u: u.is_superuser)
 def user_delete(request, pk):
-    title = "пользователи/удаление"
+    if request.is_ajax():
+        title = "пользователи/удаление"
 
-    user = get_object_or_404(ShopUser, pk=pk)
+        user = get_object_or_404(ShopUser, pk=pk)
 
-    if request.method == "POST":
+        # if request.method == "POST":
         # user.delete()
         # Instead delete we will set users inactive
         user.is_active = False
         user.save()
-        return HttpResponseRedirect(reverse("admin:users"))
+        # return HttpResponseRedirect(reverse("admin:users"))
 
-    content = {"title": title, "user_to_delete": user, "media_url": settings.MEDIA_URL}
+        result = {"title": title, "user_to_delete": user, "media_url": settings.MEDIA_URL}
 
-    return render(request, "adminapp/user_delete.html", content)
+    # return render(request, "adminapp/user_delete.html", content)
+    return JsonResponse({"result": result})
 
 
 @user_passes_test(lambda u: u.is_superuser)
