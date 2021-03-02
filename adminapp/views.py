@@ -62,21 +62,11 @@ def user_update(request, pk):
 @user_passes_test(lambda u: u.is_superuser)
 def user_delete(request, pk):
     if request.is_ajax():
-        title = "пользователи/удаление"
-
         user = get_object_or_404(ShopUser, pk=pk)
-
-        # if request.method == "POST":
-        # user.delete()
-        # Instead delete we will set users inactive
         user.is_active = False
         user.save()
-        # return HttpResponseRedirect(reverse("admin:users"))
-
-        result = {"title": title, "user_to_delete": user, "media_url": settings.MEDIA_URL}
-
-    # return render(request, "adminapp/user_delete.html", content)
-    return JsonResponse({"result": result})
+        return JsonResponse({"status": "ok"})
+    return HttpResponseRedirect(reverse("adminapp:admin_main"))
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -125,17 +115,12 @@ def category_update(request, pk):
 @user_passes_test(lambda u: u.is_superuser)
 def category_delete(request, pk):
     title = "категории/удаление"
-
-    category = get_object_or_404(ProductCategory, pk=pk)
-
-    if request.method == "POST":
+    if request.is_ajax():
+        category = get_object_or_404(ProductCategory, pk=pk)
         category.is_active = False
         category.save()
-        return HttpResponseRedirect(reverse("admin:categories"))
-
-    content = {"title": title, "category_to_delete": category, "media_url": settings.MEDIA_URL}
-
-    return render(request, "adminapp/category_delete.html", content)
+        return JsonResponse({"status": "ok"})
+    return HttpResponseRedirect(reverse("admin:categories"))
 
 
 @user_passes_test(lambda u: u.is_superuser)
