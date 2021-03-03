@@ -56,19 +56,15 @@ def products(request, pk=None):
             "basket": basket,
         }
         return render(request, "mainapp/products_list.html", content)
-
     hot_product = get_hot_product()
     same_products = get_same_products(hot_product)
-
     content = {
         "title": title,
         "links_menu": links_menu,
         "same_products": same_products,
         "media_url": settings.MEDIA_URL,
-
         "basket": basket,
         "hot_product": hot_product,
-
     }
     return render(request, "mainapp/products.html", content)
 
@@ -78,7 +74,6 @@ def contact(request):
     visit_date = timezone.now()
     locations = Contact.objects.all()
     content = {"title": title, "visit_date": visit_date, "locations": locations}
-
     return render(request, "mainapp/contact.html", content)
 
 
@@ -92,4 +87,3 @@ def product(request, pk):
         "media_url": settings.MEDIA_URL,
     }
     return render(request, "mainapp/product.html", content)
-
