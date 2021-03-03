@@ -115,26 +115,12 @@ def category_update(request, pk):
 @user_passes_test(lambda u: u.is_superuser)
 def category_delete(request, pk):
     title = "категории/удаление"
-<<<<<<< HEAD
-
-    category = get_object_or_404(ProductCategory, pk=pk)
-
-    if request.method == "POST":
-        category.is_active = False
-        category.save()
-        return HttpResponseRedirect(reverse("admin:categories"))
-
-    content = {"title": title, "category_to_delete": category, "media_url": settings.MEDIA_URL}
-
-    return render(request, "adminapp/category_delete.html", content)
-=======
     if request.is_ajax():
         category = get_object_or_404(ProductCategory, pk=pk)
         category.is_active = False
         category.save()
         return JsonResponse({"status": "ok"})
     return HttpResponseRedirect(reverse("admin:categories"))
->>>>>>> lesson_7
 
 
 @user_passes_test(lambda u: u.is_superuser)
