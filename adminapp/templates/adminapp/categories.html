@@ -8,7 +8,7 @@
     </button>
 
     {% for object in objects %}
-    <div class="category_record {% if not object.is_active %}not_active{% endif %}">
+    <div data-pk={{ object.pk }} class="category_record {% if not object.is_active %}not_active{% endif %}">
         <div class="category_name">
             {{ object.name|title }}
         </div>
@@ -18,10 +18,16 @@
             </button>
             <button>
                 <a href={% url 'admin:category_update' object.pk %}>редактировать</a>
+                <<<<<<< HEAD </button>
+                    <button>
+                        <a href={% url 'admin:category_delete' object.pk %}>удалить</a>
+                    </button>
+                    =======
             </button>
-            <button>
-                <a href={% url 'admin:category_delete' object.pk %}>удалить</a>
-            </button>
+            <a name="button_cat_delete" deleteUrl="{% url 'admin:category_delete' object.pk %}" data-pk={{ object.pk }}
+                class="btn btn-danger" role="button">удалить</a>
+
+            >>>>>>> lesson_7
         </div>
         <div class="category_desc">
             {{ object.description|title }}
