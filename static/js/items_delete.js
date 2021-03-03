@@ -1,9 +1,5 @@
-// При работе с назначением отслеживания новых событий - необходимо дождаться, пока весь DOM
-// будет сформирован. Только после этого начинаем добавлять обработчики.
 $(document).ready(function () {
-
-    $('[name=button_user_delete]').click((el) => {
-        // Как видите - все нужные свойства просто забираем из элемента ссылки
+    $('[name=button_user_delete]').click((el) => {        
         $.ajax({
             url: el.target.getAttribute("deleteUrl"),
             success: function (data) {
@@ -13,8 +9,7 @@ $(document).ready(function () {
         });
     });
 
-    $('[name=button_cat_delete]').click((el) => {
-        // Как видите - все нужные свойства просто забираем из элемента ссылки
+    $('[name=button_cat_delete]').click((el) => {       
         $.ajax({
             url: el.target.getAttribute("deleteUrl"),
             success: function (data) {
