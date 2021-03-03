@@ -15,15 +15,9 @@
             {{ object.name|title }}
         </div>
         <div class="product_actions">
-            <button>
-                <a href={% url 'admin:product_read' object.pk %}>подробнее</a>
-            </button>
-            <button>
-                <a href={% url 'admin:product_update' object.pk %}>редактировать</a>
-            </button>
-            <button>
-                <a href={% url 'admin:product_delete' object.pk %}>удалить</a>
-            </button>
+            <a class='btn my_btn' href={% url 'admin:product_read' object.pk %} role="button">подробнее</a>
+            <a class='btn my_btn' href={% url 'admin:product_update' object.pk %} role="button">редактировать</a>
+            <a class='btn my_btn btn-danger' href={% url 'admin:product_delete' object.pk %} role="button">удалить</a>
         </div>
         <div class="summary">
             <b>цена</b>

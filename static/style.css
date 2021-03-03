@@ -75,12 +75,20 @@ body {
     font-size: 150%;
 }
 
+.my_btn {
+    border: solid;
+    border-width: 1px;   
+    margin: 2px;    
+    margin-left: 0;
+    min-height: 25px;
+}
+
 .product_delete .btn {
     display: block;
     float: left;
     margin: 25px;
     width: 150px;
-    color: #111;
+    color: #111;    
 }
 
 .product_delete a {
@@ -188,7 +196,7 @@ body {
     margin: 25px;
     width: 150px;
     color: #111;
-}
+}    
 
 .category_delete a {
     color: #111;
@@ -263,7 +271,7 @@ body {
     float: left;
     margin: 25px;
     width: 150px;
-    color: #111;
+    color: #111;    
 }
 
 .user_delete a {
@@ -1825,3 +1833,4 @@ td:first-child {
 .related-products a:hover .text {
     display: block;
 }
+
