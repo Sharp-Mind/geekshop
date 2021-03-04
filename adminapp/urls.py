@@ -10,6 +10,7 @@ urlpatterns = [
     path("", adminapp.admin_main, name="admin_main"),
     path("users/create/", adminapp.user_create, name="user_create"),
     path("users/read/", adminapp.UsersListView.as_view(), name="users"),
+    path("users/read/page/<int:page>/", adminapp.UsersListView.as_view(), name="page"),
     path("users/update/<int:pk>/", adminapp.user_update, name="user_update"),
     path("users/delete/<int:pk>/", adminapp.user_delete, name="user_delete"),
     path("categories/create/", adminapp.ProductCategoryCreateView.as_view(), name="category_create"),

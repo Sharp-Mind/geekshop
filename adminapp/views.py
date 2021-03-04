@@ -21,8 +21,9 @@ def admin_main(request):
 
 
 class UsersListView(LoginRequiredMixin, ListView):
+    paginate_by = 2
     model = ShopUser
-    template_name = "adminapp/users.html"
+    template_name = "adminapp/users_list.html"
 
 
 @user_passes_test(lambda u: u.is_superuser)
