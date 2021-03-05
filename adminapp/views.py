@@ -76,6 +76,8 @@ def categories(request):
     title = "админка/категории"
     categories_list = ProductCategory.objects.all()
     content = {"title": title, "objects": categories_list, "media_url": settings.MEDIA_URL}
+    if request.is_ajax():
+        return JsonResponse({"status": "ok"})
     return render(request, "adminapp/categories.html", content)
 
 
