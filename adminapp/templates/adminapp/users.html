@@ -12,13 +12,9 @@
         <img src="{{ media_url }}{{ object.avatar|default:'users_avatars/Koala.jpg' }}" alt="{{ object.username }}">
         <div class="user_role">
             {% if object.is_superuser %}администратор{% else %}пользователь{% endif %}
-            <button>
-                <a href={% url 'admin:user_update' object.pk %}>редактировать</a>
-            </button>
-            <button>
-                <!-- <a href={% url 'admin:user_delete' object.pk %}>удалить</a> -->
-                <a href=# data-pk={{ object.pk }}>удалить</a>
-            </button>
+            <a href={% url 'admin:user_update' object.pk %} class='btn my_btn' role='button'>редактировать</a>
+            <a name="button_user_delete" deleteUrl="{% url 'admin:user_delete' object.pk %}" data-pk={{ object.pk }}
+                class="btn my_btn btn-danger" role="button">удалить</a>
         </div>
         <div class="user_name">
             <p>
