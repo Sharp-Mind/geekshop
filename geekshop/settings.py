@@ -149,7 +149,7 @@ DOMAIN_NAME = "http://localhost:8000"
 # Full list of email settings:
 #   https://docs.djangoproject.com/en/2.2/ref/settings/#email
 EMAIL_HOST = "localhost"
-EMAIL_PORT = "2526"
+EMAIL_PORT = "25"
 
 EMAIL_USE_SSL = False
 # If server support TLS:
