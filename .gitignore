@@ -219,3 +219,9 @@ fabric.properties
 
 #Red_Lance own VSCode gitignore settings:
 .vscode/
+
+# geekshop --->
+
+tmp
+
+# <--- geekshop
