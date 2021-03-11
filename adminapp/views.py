@@ -1,7 +1,7 @@
-from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic.detail import DetailView
