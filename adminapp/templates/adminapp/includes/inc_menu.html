@@ -11,4 +11,10 @@
             категории{% if category %}:<span>{{ category.name }}</span>{% endif %}
         </a>
     </li>
+    <li>
+        <a href="{% url 'admin:orders_read' %}"
+            class="{% if request.resolver_match.url_name == '' or order.name %}active{% endif %}">
+            заказы{% if order %}:<span>{{ order.name }}</span>{% endif %}
+        </a>
+    </li>
 </ul>
