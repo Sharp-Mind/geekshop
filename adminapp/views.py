@@ -1,17 +1,21 @@
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import models
 from django.http import JsonResponse
-from django.shortcuts import HttpResponseRedirect, get_object_or_404, redirect, render
+from django.shortcuts import (HttpResponseRedirect, get_object_or_404,
+                              redirect, render)
 from django.urls import reverse, reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from adminapp.forms import ProductCategoryEditForm, ProductEditForm, ShopUserAdminEditForm
+from adminapp.forms import (ProductCategoryEditForm, ProductEditForm,
+                            ShopUserAdminEditForm)
 from authnapp.forms import ShopUserRegisterForm
 from authnapp.models import ShopUser
 from mainapp.models import Product, ProductCategory
+from ordersapp.models import Order, OrderItem
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -180,3 +184,29 @@ def product_delete(request, pk):
 
     content = {"title": title, "product_to_delete": product, "media_url": settings.MEDIA_URL}
     return render(request, "adminapp/product_delete.html", content)
+
+
+class OrdersListView(LoginRequiredMixin, ListView):
+    model = Order
+    template_name = "adminapp/orders_read.html"
+
+
+class OrdersDetailView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = "adminapp/order_details.html"
+
+
+class OrdersUpdateView(LoginRequiredMixin, UpdateView):
+    model = Order
+    template_name = "adminapp/order_status.html"
+    fields = "__all__"
+
+    def get(self, request, pk, status_obj):
+        if request.is_ajax:
+            order = get_object_or_404(Order, pk=pk)
+            order.status = status_obj
+            # output = get_status_display()
+            order.save()
+            # output = order.status.filter(status=status_obj)
+            return JsonResponse({"status": "ok", "new_status": order.get_status_display()})
+        return HttpResponseRedirect(reverse("adminapp:order_status"))
