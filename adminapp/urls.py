@@ -1,4 +1,4 @@
-from django.urls import re_path
+from django.urls import path, re_path
 
 import adminapp.views as adminapp
 
@@ -10,7 +10,7 @@ urlpatterns = [
     re_path(r"^$", adminapp.admin_main, name="admin_main"),
     re_path(r"^users/create/$", adminapp.user_create, name="user_create"),
     re_path(r"^users/read/$", adminapp.UsersListView.as_view(), name="users"),
-    re_path(r"users/read/page/(?P<page_obj>\d+)/$", adminapp.UsersListView.as_view(), name="page"),
+    re_path(r"^users/read/page/(?P<page_obj>\d+)/$", adminapp.UsersListView.as_view(), name="page"),
     re_path(r"^users/update/(?P<pk>\d+)/$", adminapp.user_update, name="user_update"),
     re_path(r"^users/delete/(?P<pk>\d+)/$", adminapp.user_delete, name="user_delete"),
     re_path(r"^categories/create/$", adminapp.ProductCategoryCreateView.as_view(), name="category_create"),
@@ -22,4 +22,8 @@ urlpatterns = [
     re_path(r"^products/read/(?P<pk>\d+)/$", adminapp.ProductDetailView.as_view(), name="product_read"),
     re_path(r"^products/update/(?P<pk>\d+)/$", adminapp.product_update, name="product_update"),
     re_path(r"^products/delete/(?P<pk>\d+)/$", adminapp.product_delete, name="product_delete"),
+    re_path(r"^orders/read/$", adminapp.OrdersListView.as_view(), name="orders_read"),
+    re_path(r"^orders/read/(?P<pk>\d+)/$", adminapp.OrdersDetailView.as_view(), name="order_details"),
+    # re_path(r"^orders/update/(?P<pk>\d+)/status/(?P<status_obj>)/$", adminapp.OrdersUpdateView.as_view(), name="order_status"),
+    path("orders/update/<int:pk>/status/<str:status_obj>/", adminapp.OrdersUpdateView.as_view(), name="order_status"),   
 ]
