@@ -204,9 +204,7 @@ class OrdersUpdateView(LoginRequiredMixin, UpdateView):
     def get(self, request, pk, status_obj):
         if request.is_ajax:
             order = get_object_or_404(Order, pk=pk)
-            order.status = status_obj
-            # output = get_status_display()
-            order.save()
-            # output = order.status.filter(status=status_obj)
+            order.status = status_obj            
+            order.save()            
             return JsonResponse({"status": "ok", "new_status": order.get_status_display()})
         return HttpResponseRedirect(reverse("adminapp:order_status"))
