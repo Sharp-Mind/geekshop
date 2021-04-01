@@ -1,16 +1,20 @@
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import models
+from django.db import connection, models
 from django.db.models import F
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.http import JsonResponse
-from django.shortcuts import HttpResponseRedirect, get_object_or_404, redirect, render
+from django.shortcuts import (HttpResponseRedirect, get_object_or_404,
+                              redirect, render)
 from django.urls import reverse, reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from adminapp.forms import ProductCategoryEditForm, ProductEditForm, ShopUserAdminEditForm
+from adminapp.forms import (ProductCategoryEditForm, ProductEditForm,
+                            ShopUserAdminEditForm)
 from authnapp.forms import ShopUserRegisterForm
 from authnapp.models import ShopUser
 from mainapp.models import Product, ProductCategory
@@ -108,7 +112,7 @@ class ProductCategoryUpdateView(LoginRequiredMixin, UpdateView):
             if discount:
                 print(f"применяется скидка {discount}% к товарам категории {self.object.name}")
                 self.object.product_set.update(price=F("price") * (1 - discount / 100))
-                # db_profile_by_type(self.__class__, "UPDATE", connection.queries)
+                db_profile_by_type(self.__class__, "UPDATE", connection.queries)
 
         return super().form_valid(form)
 
@@ -217,3 +221,20 @@ class OrdersUpdateView(LoginRequiredMixin, UpdateView):
             order.save()
             return JsonResponse({"status": "ok", "new_status": order.get_status_display()})
         return HttpResponseRedirect(reverse("adminapp:order_status"))
+
+
+def db_profile_by_type(prefix, type, queries):
+    update_queries = list(filter(lambda x: type in x["sql"], queries))
+    print(f"db_profile {type} for {prefix}:")
+    [print(query["sql"]) for query in update_queries]
+
+
+@receiver(pre_save, sender=ProductCategory)
+def product_is_active_update_productcategory_save(sender, instance, **kwargs):
+    if instance.pk:
+        if instance.is_active:
+            instance.product_set.update(is_active=True)
+        else:
+            instance.product_set.update(is_active=False)
+
+        # db_profile_by_type(sender, 'UPDATE', connection.queries)
