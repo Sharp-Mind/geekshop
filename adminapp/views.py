@@ -2,16 +2,15 @@ from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import models
+from django.db.models import F
 from django.http import JsonResponse
-from django.shortcuts import (HttpResponseRedirect, get_object_or_404,
-                              redirect, render)
+from django.shortcuts import HttpResponseRedirect, get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from adminapp.forms import (ProductCategoryEditForm, ProductEditForm,
-                            ShopUserAdminEditForm)
+from adminapp.forms import ProductCategoryEditForm, ProductEditForm, ShopUserAdminEditForm
 from authnapp.forms import ShopUserRegisterForm
 from authnapp.models import ShopUser
 from mainapp.models import Product, ProductCategory
@@ -96,12 +95,22 @@ class ProductCategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = ProductCategory
     template_name = "adminapp/category_update.html"
     success_url = reverse_lazy("admin:categories")
-    fields = "__all__"
+    form_class = ProductCategoryEditForm
 
     def get_context_data(self, **kwargs):
         context = super(ProductCategoryUpdateView, self).get_context_data(**kwargs)
         context["title"] = "категории/редактирование"
         return context
+
+    def form_valid(self, form):
+        if "discount" in form.cleaned_data:
+            discount = form.cleaned_data["discount"]
+            if discount:
+                print(f"применяется скидка {discount}% к товарам категории {self.object.name}")
+                self.object.product_set.update(price=F("price") * (1 - discount / 100))
+                # db_profile_by_type(self.__class__, "UPDATE", connection.queries)
+
+        return super().form_valid(form)
 
 
 class ProductCategoryDeleteView(LoginRequiredMixin, DeleteView):
@@ -204,7 +213,7 @@ class OrdersUpdateView(LoginRequiredMixin, UpdateView):
     def get(self, request, pk, status_obj):
         if request.is_ajax:
             order = get_object_or_404(Order, pk=pk)
-            order.status = status_obj            
-            order.save()            
+            order.status = status_obj
+            order.save()
             return JsonResponse({"status": "ok", "new_status": order.get_status_display()})
         return HttpResponseRedirect(reverse("adminapp:order_status"))
