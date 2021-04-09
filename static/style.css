@@ -261,6 +261,8 @@ body {
 
 .categories_list {
     margin-left: 150px;
+    display: flex;
+    flex-direction: column;
 }
 
 .categories_list .new_category {
